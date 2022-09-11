@@ -63,6 +63,6 @@ Pour la question du "mode dev" :
 Il faut faire un truc pour que le package.json qui est versionné ne soit pas celui en dev
 */
 const init = async () => {
-  console.log("Installation !")
+  console.log("Installation  Version 2 !")
 }
 init();
