@@ -1,0 +1,43 @@
+name: Publish
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Git config
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      - name: Increment patch version
+        run: npm --no-git-tag-version version patch
+      - name: Commit new package.json version
+        run: |
+          git commit package.json -m "[bot] Updated initializer version"
+      - name: Push new version to master branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+      - name: Publish to package registry
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "new_version=$(node -e 'console.log(require(`./package.json`).version.replace(/\./g,`-`));')" >> $GITHUB_ENV
+      - name: Publish release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ env.new_version }}"
+          prerelease: true
+          title: "${{ env.new_version }}"

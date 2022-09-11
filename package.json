@@ -1,0 +1,29 @@
+{
+  "name": "@ocade-compagny/create-ocade-system",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "create-gco-gatsby": "node index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "prompts": "^2.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maison-graciet/create-gco-gatsby.git"
+  },
+  "author": "Ocade System",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ocade-compagny/create-ocade-system/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "homepage": "https://github.com/ocade-compagny/create-ocade-system#readme"
+}
