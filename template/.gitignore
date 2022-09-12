@@ -1,0 +1,9 @@
+/application/node_modules
+/application/package-lock.json
+/application/public/index.html
+/ocade-system/config.mjs
+
+/server/node_modules
+/server/factures/date-*
+/server/backups/
+/server/package-lock.json

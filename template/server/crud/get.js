@@ -1,0 +1,13 @@
+import { CONFIG } from "../config.js";
+import pool from "../index.js";
+
+export const Get = (table, options) => {
+  const { req, res, query } = options;
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, [], (err, results) => {
+      if (err) return reject(console.log(`${err}`));
+      resolve();
+    });
+  });
+};

@@ -1,0 +1,7 @@
+FROM node:14-alpine
+
+WORKDIR /app/application 
+
+COPY . /app/application
+
+CMD ["npm", "scss"]
