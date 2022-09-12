@@ -33,36 +33,79 @@ const verifyURL = (str) => {
   return true;
 }
 
-/*
-Faire un dépôt "Gatsby-Lib" avec tout : --> remplace components et gatsby-root
-  - composants
-  - pages
-  - templates
-  - queries
-  - utilitaires :
-    - script init/post-install
-    - config générale
-  - contient un script post install qui ln -s les scripts vers ./lib/scripts
-
-Faire un autre dépôt pour le script d'install --> remplace gatsby-template
-  - contient la structure du projet
-  - pose des questions pour les composants utilisés, les plugins nécessaires
-  - installe tout en mode "dev", c'est à dire que le dépôt est cloné sous ./lib/ et le package.json le considère comme un alias
-  - installe toutes les dépendances dans leur dernière version
-  - modifie le package.json
-  - avertir l'utilisateur qu'il doit paramétrer les polices Google si fonts est true
-  - git init
-
-Pour la question du "mode dev" :
-* On clone dans un sous-dossier gatsby-lib.
-* Ce dossier est dans le gitignore.
-* On exécute npm install path/to/gatsby-lib --no-save
--> ça remplace dans node_modules par un symlink MAIS n'altère pas le package.json !
-
-
-Il faut faire un truc pour que le package.json qui est versionné ne soit pas celui en dev
-*/
+/** Ce script doit:
+ * - Demander le nom du projet (package.json) slug
+ * ~ Copier le dossier template avec le slug comme nom
+ * ~ npm install
+ * ~ npm init
+ */
 const init = async () => {
-  console.log("Installation  Version 2 !")
+  console.log("Bienvenue dans l'installateur Ocade System !\n");
+
+  const packageJSON = {
+    "name": "",
+    "version": "1.0.0",
+    "private": true,
+    "description": "",
+    "author": "Ocade System",
+    "keywords": [
+      "react", "ocade", "ocade-system"
+    ],
+    "scripts": {
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+    }
+  };
+  const packages = [
+  ];
+  const devPackages = [
+  ];
+
+  const specifics = {
+    title: answer => {
+      packageJSON.name = answer.toLowerCase().replace(/ /g, "-");
+      packageJSON.description = `Code de l'application web pour ${answer}`;
+    }
+  };
+
+  const questions = [
+    ["title", "Nom du projet", "text"]    
+  ];
+
+
+  console.log(`
+
+  ╭───────────────────────────────────────────╮
+  │                                           │
+  │                    O S                    │
+  │                                           │
+  │         INSTALLATION OCADE/SYSTEM         │
+  │             (REACT/NODE/MYSQL)            │
+  │                                           │
+  ╰───────────────────────────────────────────╯
+
+  `);
+
+  for (const q of questions) {
+    const response = await ask(q);
+    if (Object.keys(specifics).includes(q[0])) specifics[q[0]](response);
+  }
+
+  console.log("Package Json", packageJSON);
+  // Récupération du path où est éxécuter la commande npm init create-ocade-system
+  const myPath = process.cwd();
+  // Copie du dossier template en remplaçant le nom par le slug du title renseigné.
+  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
+  // Ecrire la configuration Package Json
+  writeFileSync(
+    path.resolve(myPath, packageJSON.name, "package.json"), 
+    packageJSON,
+    {
+      encoding: "utf8",
+      flag: "w+",
+    }
+  );
 }
 init();
