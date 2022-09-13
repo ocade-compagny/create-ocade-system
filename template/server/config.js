@@ -26,25 +26,8 @@ CONFIG.bdd.name = process.env.MYSQL_DATABASE;
 CONFIG.bdd.debug = process.env.MYSQL_DEBUG;
 CONFIG.bdd.stringifyObjects = process.env.MYSQL_STRINGIFY_OBJECTS;
 
-CONFIG.admin = {};
-CONFIG.admin.identifiant = process.env.ADMIN_ID;
-CONFIG.admin.pwd = process.env.ADMIN_PWD;
-
 /** key = 32 caractères ! */
 CONFIG.crypto = {};
 CONFIG.crypto.key = process.env.CRYPTO_KEY;
-
-CONFIG.colors = {};
-CONFIG.colors.white = process.env.COLORS_WHITE;
-CONFIG.colors.black = process.env.COLORS_BLACK;
-CONFIG.colors.danger = process.env.COLORS_DANGER;
-CONFIG.colors.success = process.env.COLORS_SUCCESS;
-CONFIG.colors.orange = process.env.COLORS_ORANGE;
-CONFIG.colors.blue = process.env.COLORS_BLUE;
-CONFIG.colors.purple = process.env.COLORS_PURPLE;
-CONFIG.colors.one = process.env.COLORS_ONE;
-CONFIG.colors.two = process.env.COLORS_TWO;
-CONFIG.colors.three = process.env.COLORS_THREE;
-CONFIG.colors.four = process.env.COLORS_FOUR;
 
 export { CONFIG }

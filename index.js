@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { execSync } from "child_process";
 import prompts from "prompts";
-import { URL } from "url";
 import path from "path";
 import {writeFileSync} from "fs";
+import {dockerCompose} from "./install/docker-compose.js";
 
 
 const ask = async (q) => {
@@ -27,53 +27,17 @@ const ask = async (q) => {
   return response[q[0]];
 }
 
-const verifyURL = (str) => {
-  try { new URL(str) }
-  catch (e) { return "L'URL n'est pas valide"; }
-  return true;
-}
-
-/** Ce script doit:
- * - Demander le nom du projet (package.json) slug
- * ~ Copier le dossier template avec le slug comme nom
- * ~ npm install
- * ~ npm init
- */
 const init = async () => {
   console.log("Bienvenue dans l'installateur Ocade System !\n");
 
-  const packageJSON = {
-    "name": "",
-    "version": "1.0.0",
-    "private": true,
-    "description": "",
-    "author": "Ocade System",
-    "keywords": [
-      "react", "ocade", "ocade-system"
-    ],
-    "scripts": {
-    },
-    "dependencies": {
-    },
-    "devDependencies": {
-    }
-  };
-  const packages = [
-  ];
-  const devPackages = [
-  ];
-
-  const specifics = {
-    title: answer => {
-      packageJSON.name = answer.toLowerCase().replace(/ /g, "-");
-      packageJSON.description = `Code de l'application web pour ${answer}`;
-    }
-  };
-
   const questions = [
-    ["title", "Nom du projet", "text"]    
+    ["APP_NAME", "Nom du projet", "text"],    
+    ["ENV", "Environnement production", "toggle"],    
+    ["MYSQL_USER", "Mysql user", "text"],
+    ["MYSQL_PASSWORD", "Mysql password", "text"],
+    ["MYSQL_DATABASE", "Mysql database", "text"],
   ];
-
+  const answers = {};
 
   console.log(`
 
@@ -88,24 +52,42 @@ const init = async () => {
 
   `);
 
-  for (const q of questions) {
-    const response = await ask(q);
-    if (Object.keys(specifics).includes(q[0])) specifics[q[0]](response);
-  }
+  /** ASK Questions */
+  for (const q of questions) answers[q[0]] = await ask(q);
+  answers["APP_NAME_SLUG"] = answers["APP_NAME"].toLowerCase().replace(/ /g, "-").replaceAll('"', "");
 
-  console.log("Package Json", packageJSON);
-  // Récupération du path où est éxécuter la commande npm init create-ocade-system
+  /** Path du dossier de téléchargement local */
   const myPath = process.cwd();
-  // Copie du dossier template en remplaçant le nom par le slug du title renseigné.
-  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
-  // Ecrire la configuration Package Json
-  writeFileSync(
-    path.resolve(myPath, packageJSON.name, "package.json"), 
-    packageJSON,
-    {
-      encoding: "utf8",
-      flag: "w+",
-    }
-  );
+
+  /** Copie du dossier template */
+  // execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
+  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "./template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
+
+
+  /** Génération du fichier .env */
+  const env = `
+APP_NAME=${answers.APP_NAME}
+ENV=${answers.ENV ? "production" : "development"}
+MYSQL_USER=${answers.MYSQL_USER}
+MYSQL_PASSWORD=${answers.MYSQL_PASSWORD}
+MYSQL_DATABASE=${answers.MYSQL_DATABASE}
+MYSQL_HOST_IP="127.0.0.1"
+MYSQL_PORT="3306"
+MYSQL_DEBUG=${answers.ENV ? false : true}
+MYSQL_STRINGIFY_OBJECTS="true"
+APP_NAME_SLUG=${answers.APP_NAME_SLUG}
+SERVER_PORT=8000
+SERVER_URL="http://localhost:8000"
+REACT_PORT=3000
+REACT_URL="http://localhost:3000"
+CRYPTO_KEY="Ph93DKXTT384GJFe?6G3Ft5t4#5DnSCg"
+`;
+writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
+
+  /** Génération du fichier docker-compose.yml */
+  const dockerComposeYml = dockerCompose(answers);
+  writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, "docker-compose.yml"), dockerComposeYml);
+  
+  
 }
 init();

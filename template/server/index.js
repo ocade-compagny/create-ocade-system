@@ -1,35 +1,14 @@
 import { CONFIG } from "./config.js";
 import cors from "cors";
-import fs from "fs";
 import express from "express";
 import mysql from "mysql";
 import Routes from "./routes.js";
 import { Init } from "./init.js";
 
-// CONFIG dans React
-fs.writeFile('../application/src/config.json', JSON.stringify(CONFIG, null, 2), { flag: 'w+' }, err => { if (err) console.error(err) });
-
-// Colors dans _root.scss
-let rootColors = `
-/**
-* Colors Generate by index.js from server express with the config.js colors.
-*/
-:root {
-\n`;
-for (const [key, value] of Object.entries(CONFIG.colors)) {
-  rootColors += `--${key}: ${value};\n`;
-}
-rootColors += `\n}`;
-fs.writeFile('../application/src/styles/scss/_root.scss', rootColors, { 
-  "encoding": "utf8",
-  "flag": "w",
-  "mode": 0o666
-}, err => { if (err) console.error(err) });
 
 
 /** Creation server Express **/
 const app = express();
-
 
   /** CORS **/
   /** Gestion des CORS **/
