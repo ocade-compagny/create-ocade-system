@@ -3,7 +3,6 @@ config({ path: '../.env' });
 import express from "express";
 import helmet from "helmet";
 import mysql2 from "mysql2";
-import Routes from "./routes.js";
 
 
 class Server {
@@ -21,7 +20,7 @@ class Server {
     await this.createBDD(); /** Création de la BDD si existe pas */
     await this.createPoolMysql(); /** Création du pool MySQL + Test */
     /** 🔥🔥🔥🔥 Chargement d'une bdd par défault ??! */
-    Routes(this.app); /** Initialisation de toutes les routes Express */
+    this.createRoutes(); /** Initialisation de toutes les routes Express */
     this.listenExpress() /** Ecoute du server Express sur son port */
   }
 
@@ -89,6 +88,25 @@ class Server {
       this.pool = pool;
       resolve();
     });
+  }
+
+  /** Initialisation de toutes les routes Express */
+  createRoutes() {
+    /** Toutes les routes affichent des informaitons */
+    this.app.all("/*", function(req, res, next){
+      const date = (new Date()).toISOString();
+      console.log([date, req.method, req.url, req.headers["user-agent"], req.ip].join("\t"));
+      next();
+    });
+
+    /** Route de base sert application React */
+    if (process.env.ENV === "production") {
+      const serverFolder = process.cwd();
+      this.app.use(express.static(`${serverFolder}/../application/build`));
+      this.app.get('/', function(req, res) {
+          res.sendFile(`${serverFolder}/../application/build/index.html`);
+      });
+    }
   }
 
   /** Ecoute du server Express */

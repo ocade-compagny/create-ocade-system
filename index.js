@@ -78,7 +78,7 @@ class Install {
     MYSQL_USER=${this.answers.MYSQL_USER}
     MYSQL_PASSWORD=${this.answers.MYSQL_PASSWORD}
     MYSQL_DATABASE=${this.answers.MYSQL_DATABASE}
-    MYSQL_HOST_IP="127.0.0.1"
+    MYSQL_HOST_IP="localhost"
     MYSQL_PORT="3306"
     MYSQL_DEBUG=${this.answers.ENV ? false : true}
     MYSQL_STRINGIFY_OBJECTS="true"
@@ -136,7 +136,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server")} && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server")} && npm install -g npm@latest && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
@@ -147,8 +147,8 @@ class Install {
 
   /** Lancement de docker-compose */
   runDockerCompose() {
-    console.log("\n🔥 Lancement de docker-compose");
-    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && docker-compose up -d`, { stdio: "inherit" });
+    console.log("\n🔥 Lancement de docker-compose\n");
+    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && docker-compose up -d --build`, { stdio: "inherit" });
   }
 
   /** Affiche la fin de l'installation */
