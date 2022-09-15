@@ -81,8 +81,7 @@ class Install {
 
   /** Copie le template */
   copieTemplate() {
-    // execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG )}`);
-    execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "template")} ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG )}`);
+    execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG )}`);
   }
 
   /** Génération du fichier .env */
