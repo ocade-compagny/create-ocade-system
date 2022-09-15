@@ -56,13 +56,11 @@ const init = async () => {
   };
 
   const packages = [
-    "sass",
     "express",
     "nodemon",
     "dotenv",
     "mysql",
     "core",
-    "crypto"
   ];
   const devPackages = [
   ];
@@ -117,13 +115,67 @@ SERVER_PORT=8000
 SERVER_URL="http://localhost:8000"
 REACT_PORT=3000
 REACT_URL="http://localhost:3000"
-CRYPTO_KEY="Ph93DKXTT384GJFe?6G3Ft5t4#5DnSCg"
 `;
 writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
 
   /** Génération du fichier docker-compose.yml */
   const dockerComposeYml = dockerCompose(answers);
   writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, "docker-compose.yml"), dockerComposeYml);
+
+
+  // Ecrire la configuration package.json initial (sans dépendances)
+  writeFileSync(
+    `${path.resolve(myPath)}/${packageJSON.name}/package.json`,
+    JSON.stringify(packageJSON, null, 2),
+    {
+      encoding: "utf8",
+      flag: "w+",
+    }
+  );
+
+  // Installation des dépendances
+    console.log(`
+    ╭───────────────────────────────────────────╮
+    │                                           │
+    │                   O S                     │
+    │                                           │
+    │          INSTALLATION DEPENDANCES         │
+    │                OCADE SYSTEM               │
+    │                                           │
+    ╰───────────────────────────────────────────╯
+  
+    `);
+  execSync(`cd ${path.resolve(myPath, packageJSON.name)} && npm install ${packages.join(" ")}`, {stdio: 'inherit'});
+
+    // Installation des dev dépendances
+    console.log(`
+    ╭───────────────────────────────────────────╮
+    │                                           │
+    │                   O S                     │
+    │                                           │
+    │        INSTALLATION DEV DEPENDANCES       │
+    │                OCADE SYSTEM               │
+    │                                           │
+    ╰───────────────────────────────────────────╯
+  
+    `);
+  execSync(`cd ${path.resolve(myPath, packageJSON.name)} && npm install ${devPackages.join(" ")} --save-dev`, {stdio: 'inherit'});
+
+  // git init
+  console.log("🔥 Initialisation du dépôt git");
+  execSync(`cd ${path.resolve(myPath, packageJSON.name)} && git init`, {stdio: 'inherit'});
+
+  // Fin du script d'installation
+  console.log(`
+  ╭───────────────────────────────────────────╮
+  │                                           │
+  │                   G G G                   │
+  │                                           │
+  │      FIN INSTALLATION GATSBY/GCO/GES      │
+  │                                           │
+  ╰───────────────────────────────────────────╯
+  `);
+
 
   /** 
    * 1. cd dans le dossier créer
