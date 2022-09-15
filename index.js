@@ -22,6 +22,7 @@ class Install {
     this.createServerPackageJson(); /** Création du fichier package.json du serveur */
     this.installServerDependencies(); /** Installation des dépendances du serveur */
     this.initDepotGit(); /** Initialisation du dépot git */
+    this.runDockerCompose(); /** Lancement de docker-compose */
     this.showFinishInstallation(); /** Affiche la fin de l'installation */
   }
 
@@ -140,8 +141,14 @@ class Install {
 
   /** Initialisation du dépôt git */
   initDepotGit() {
-    console.log("🔥 Initialisation du dépôt git");
+    console.log("\n🔥 Initialisation du dépôt git");
     execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && git config --global init.defaultBranch master`, { stdio: "inherit" });
+  }
+
+  /** Lancement de docker-compose */
+  startDockerCompose() {
+    console.log("\n🔥 Lancement de docker-compose");
+    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && docker-compose up -d`, { stdio: "inherit" });
   }
 
   /** Affiche la fin de l'installation */
