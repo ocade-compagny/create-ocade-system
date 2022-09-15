@@ -10,17 +10,12 @@
     "serve": "npx kill-port 8000 && nodemon --delay 1000ms index.js"
   },
   "keywords": [
+    "ocade-system",
     "server",
     "node",
     "express"
   ],
   "author": "Valentin Charrier",
   "license": "ISC",
-  "dependencies": {
-    "cors": "*",
-    "crypto": "*",
-    "dotenv": "*",
-    "express": "*",
-    "mysql": "*"
-  }
+  "dependencies": {}
 }
