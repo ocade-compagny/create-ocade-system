@@ -95,7 +95,6 @@ const init = async () => {
   const myPath = process.cwd();
 
   /** Copie du dossier template */
-  // execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
   execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
 
 
@@ -123,9 +122,9 @@ writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
   writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, "docker-compose.yml"), dockerComposeYml);
 
 
-  // Ecrire la configuration package.json initial (sans dépendances)
+  // Ecrire la configuration package.json du server initial (sans dépendances)
   writeFileSync(
-    `${path.resolve(myPath)}/${packageJSON.name}/package.json`,
+    `${path.resolve(myPath)}/${packageJSON.name}/server/package.json`,
     JSON.stringify(packageJSON, null, 2),
     {
       encoding: "utf8",
@@ -145,7 +144,7 @@ writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
     ╰───────────────────────────────────────────╯
   
     `);
-  execSync(`cd ${path.resolve(myPath, packageJSON.name)} && npm install ${packages.join(" ")}`, {stdio: 'inherit'});
+  execSync(`cd ${path.resolve(myPath, packageJSON.name, "server")} && npm install ${packages.join(" ")}`, {stdio: 'inherit'});
 
     // Installation des dev dépendances
     console.log(`
@@ -159,7 +158,7 @@ writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
     ╰───────────────────────────────────────────╯
   
     `);
-  execSync(`cd ${path.resolve(myPath, packageJSON.name)} && npm install ${devPackages.join(" ")} --save-dev`, {stdio: 'inherit'});
+  execSync(`cd ${path.resolve(myPath, packageJSON.name, "server")} && npm install ${devPackages.join(" ")} --save-dev`, {stdio: 'inherit'});
 
   // git init
   console.log("🔥 Initialisation du dépôt git");
