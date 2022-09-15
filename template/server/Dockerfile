@@ -9,4 +9,4 @@ COPY . app/server
 
 RUN npm install
 
-# CMD ["npm", "start"]
+CMD ["npm", "start"]

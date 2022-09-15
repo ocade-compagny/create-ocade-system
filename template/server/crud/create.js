@@ -1,4 +1,3 @@
-import { CONFIG } from "../config.js";
 import pool from "../index.js";
 
 export const Create = (table, options) => {

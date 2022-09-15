@@ -1,106 +1,100 @@
-import { CONFIG } from "./config.js";
-import cors from "cors";
+import { config } from "dotenv";
+config({ path: '../.env' });
 import express from "express";
-import mysql from "mysql";
+import helmet from "helmet";
+import mysql2 from "mysql2";
 import Routes from "./routes.js";
-import { Init } from "./init.js";
 
 
+class Server {
+  constructor() {
+    this.app; /** App Express */
+    this.PORT = process.env.SERVER_PORT || 8000; /** Port Express */
+    this.connect; /** Connexion à la BDD */
+    this.pool; /** Pool de connexion à la BDD, permet de faire des requêtes SQL */
+    this.initialisation(); /** Initialisation du server et permet d'utiliser async/await */
+  }
 
-/** Creation server Express **/
-const app = express();
+  async initialisation () {
+    this.initExpress(); /** Initialisation du server Express */
+    await this.createConnexionMysql(); /** Création du pool MySQL + Test */
+    await this.createBDD(); /** Création de la BDD si existe pas */
+    await this.createPoolMysql(); /** Création du pool MySQL + Test */
+    /** 🔥🔥🔥🔥 Chargement d'une bdd par défault ??! */
+    Routes(this.app); /** Initialisation de toutes les routes Express */
+    this.listenExpress() /** Ecoute du server Express sur son port */
+  }
 
-  /** CORS **/
-  /** Gestion des CORS **/
-  console.log("Gestion des CORS...");
-  app.use(cors());
+  /** Initialisation du server Express */
+  initExpress() {
+    const app = express();
+    app.use(helmet());
+    app.use(
+      express.json({
+        limit: "5mb",
+        verify: (req, res, buf) => {
+          req.rawBody = buf.toString();
+        },
+      })
+    );
 
-  /** Permet de récupérer le body des requetes. **/
-  app.use(express.json());
-
-  /** Evite les erreurs de cross origin (à changer pour la production pour des raisons de sécurité) **/
-  app.use( 
-    (req, res, next) => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, HEAD,PATCH, OPTIONS');
-      next();
-    }
-  );
-
-  /** Catch les erreurs */
-  app.on("uncaughtException", (req, res) => { res.status(500).end(); });   
-
-const initServer = async () => {
-  /** Chargement des routes **/
-  console.log("Chargement des routes...");
-  Routes(app);
-
-  console.log("Création d'une connexion mysql...");
-  const connect = mysql.createConnection({
-    host: CONFIG.bdd.host,
-    user: CONFIG.bdd.user,
-    password: CONFIG.bdd.pwd,
-    port: CONFIG.bdd.port,
-    debug: CONFIG.bdd.debug === "true",
-    stringifyObjects: CONFIG.bdd.stringifyObjects === "true"
-  });
-
-  /** Test de la connexion **/
-  console.log("Test de la connexion à la base de données...");
-  const connectPromise = () => new Promise((resolve, reject) => {
-    connect.connect(err => { err ? console.log("Erreur lors de la connexion BDD", err) : resolve("Connexion réussie !"); });
-  });
-  await connectPromise();
-
-  /** Creation de la BDD si existe pas **/
-  console.log("Création de la BDD si existe pas...");
-  const createBDDPromise = () => new Promise((resolve, reject) => {
-    connect.query(`CREATE DATABASE IF NOT EXISTS \`${CONFIG.bdd.name}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`, [], (err, result) => {
-      err ? console.log(err) : resolve();
+    app.on("uncaughtException", (req, res) => {
+      res.status(500).end();
     });
-  });
-  await createBDDPromise()
+    this.app = app
+  }
 
-  /** Création d'un pool mysql (permet d'exécuter nos futures requêtes) **/
-  console.log("Création d'un pool mysql (permet d'exécuter nos futures requêtes)...");
-  const pool =  mysql.createPool({
-    host: CONFIG.bdd.host,
-    user: CONFIG.bdd.user,
-    password: CONFIG.bdd.pwd,
-    database: CONFIG.bdd.name,
-    port: CONFIG.bdd.port,
-    debug: false,
-    stringifyObjects: CONFIG.bdd.stringifyObjects === "true"
-  });
+  /** Création de la connexion MySQL */
+  createConnexionMysql() {
+    return new Promise((resolve, reject) => {
+      const connect = mysql2.createConnection({
+        host: process.env.MYSQL_HOST_IP,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        port: process.env.MYSQL_PORT,
+        debug: process.env.MYSQL_DEBUG === "true",
+        stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
+      });
+      connect.connect(err => { err ? console.log("Erreur lors de la connexion BDD", err) : resolve("Connexion réussie !"); });
+      this.connect = connect;
+    })
+  }
 
-  /** Test de la connexion à la BDD **/
-  console.log("Test de la connexion à la BDD...");
-  pool.getConnection(function (err, connection) {
-    return err 
-      ? console.log("Erreur", err)
-      : console.log(`Connexion à la BDD '${CONFIG.bdd.name}' réussie !`);
-  });
-
-  console.log("Initialisation de la BDD...");
-  await Init(pool);
-  
-  /** Service de App React sur root "/" */
-  console.log("Service de App React sur root '/'...");
-  if(CONFIG.env === "prod") {
-    const serverFolder = process.cwd();
-    app.use(express.static(`${serverFolder}/../application/build`));
-    app.get('/', function(req, res) {
-        res.sendFile(`${serverFolder}/../application/build/index.html`);
+  /** Création de la BDD si existe pas */
+  createBDD() {
+    return new Promise((resolve, reject) => {
+      this.connect.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`, [], (err, result) => {
+        err ? console.log(err) : resolve();
+      });
     });
   }
 
-  /** Server écoute */
-  app.listen(CONFIG.api.port, () => {
-    console.log(`\nServer Node Express écoute sur le port: ${CONFIG.api.port}\n`);
-  });
+  /** Création du pool MySQL + Test */
+  createPoolMysql() {
+    return new Promise((resolve, reject) => {
+      const pool = mysql2.createPool({
+        host: process.env.MYSQL_HOST_IP,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DATABASE,
+        port: process.env.MYSQL_PORT,
+        debug: process.env.MYSQL_DEBUG === "true",
+        stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
+      });
+      pool.getConnection(function (err, connection) {
+        return err
+          ? console.log("Erreur", err)
+          : console.log(`Connexion à la BDD '${process.env.MYSQL_DATABASE}' réussie !`);
+      });
+      this.pool = pool;
+      resolve();
+    });
+  }
 
-  return pool;
-};
-
-export default initServer();
+  /** Ecoute du server Express */
+  listenExpress() {
+    this.app.listen(this.PORT);
+    console.log("Server started on port "+this.PORT);
+  }
+}
+new Server();

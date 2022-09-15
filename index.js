@@ -18,7 +18,7 @@ class Install {
     await this.questions(); /** Pose les questions */
     this.showStart(); /** Affiche le début de l'installation */
     this.copieTemplate(); /** Copie le template */
-    this.createPointEnt(); /** Création du fichier .env */
+    this.createPointEnv(); /** Création du fichier .env */
     this.createDockerCompose(); /** Création du fichier docker-compose.yml */
     this.createServerPackageJson(); /** Création du fichier package.json du serveur */
     this.installServerDependencies(); /** Installation des dépendances du serveur */
@@ -86,7 +86,7 @@ class Install {
   }
 
   /** Génération du fichier .env */
-  createPointEnt() {
+  createPointEnv() {
     const env = `
     APP_NAME=${this.answers.APP_NAME}
     ENV="${this.answers.ENV ? "production" : "development"}"
@@ -116,6 +116,7 @@ class Install {
   createServerPackageJson() {
     const packageJson = {
       "name": `server-${this.answers.APP_NAME_SLUG}`,
+      "type": "module",
       "version": "1.0.0",
       "description": "Server Express",
       "main": "index.js",
@@ -127,12 +128,11 @@ class Install {
       "author": "Valentin Charrier",
       "license": "ISC",
       "dependencies": {
-        "body-parser": "^1.19.0",
-        "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "mysql2": "^2.1.0",
         "nodemon": "^2.0.4",
+        "helmet": "^6.0.0",
       }
     };
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server", "package.json"), JSON.stringify(packageJson, null, 2), { encoding: "utf8", flag: "w" });
