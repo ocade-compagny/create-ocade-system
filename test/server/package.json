@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "name": "server-node",
+  "version": "0.0.1",
+  "description": "Server Node js Express. Fonctionne en équipe avec React et Mariadb",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --delay 1000ms index.js",
+    "serve": "npx kill-port 8000 && nodemon --delay 1000ms index.js"
+  },
+  "keywords": [
+    "server",
+    "node",
+    "express"
+  ],
+  "author": "Valentin Charrier",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "*",
+    "crypto": "*",
+    "dotenv": "*",
+    "express": "*",
+    "mysql": "*"
+  }
+}

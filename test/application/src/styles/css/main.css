@@ -1,0 +1,159 @@
+/**
+* Colors Generate by index.js from server express with the config.js colors.
+*/
+:root {
+  --white: rgb(255,255,255);
+  --black: #172121;
+  --danger: rgb(215,25,60);
+  --success: #02b784;
+  --orange: #e6722d;
+  --blue: #1870E2;
+  --purple: #7B0EE8;
+  --one: #20232a;
+  --two: #BFACB5;
+  --three: #9e19e8;
+  --four: rgb(30,30,30);
+}
+
+/** all */
+* {
+  box-sizing: border-box;
+  color: var(--white);
+}
+
+/** html, body */
+html, body {
+  padding: 0;
+  margin: 0;
+  background-color: rgb(20, 20, 20);
+}
+
+/** Titres */
+h1 {
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h3 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+h4 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+h5 {
+  margin-top: 1.875rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+h6 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/** Liens */
+a {
+  text-decoration: none;
+  color: var(--success);
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/** paragraphes */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/** listes */
+ul {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+/** liste item */
+li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.search-field__results li {
+  background-color: var(--one) !important;
+}
+
+.search-field__results li:hover, .search-field__results li:hover * {
+  background-color: var(--two) !important;
+}
+
+/** input */
+input {
+  display: block;
+  margin: 3rem auto 0.75rem;
+  padding-left: 1rem;
+  width: 90%;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: var(--white);
+  background-color: var(--one);
+  opacity: 0.8;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid var(--two);
+  opacity: 1;
+}
+
+input::placeholder {
+  color: var(--white);
+}
+
+button {
+  display: inline-block;
+  background-color: var(--one);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border: none;
+  font-size: 1rem;
+  margin: 0 auto;
+  width: 90%;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+button:hover {
+  background-color: var(--two);
+}
+
+button[disabled] {
+  background-color: var(--one);
+  color: var(--white);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/*# sourceMappingURL=main.css.map */
