@@ -16,6 +16,8 @@ x-common-variables: &common-variables
   MYSQL_DATABASE: $MYSQL_DATABASE
   # Adresse de la base de données mysql (127.0.0.1)
   MYSQL_HOST_IP: $MYSQL_HOST_IP
+  # Port de la base de données mysql (3306)
+  MYSQL_PORT: $MYSQL_PORT
   # Debug de la base de données activé/désactivé
   MYSQL_DEBUG : $MYSQL_DEBUG
   # Activation de la fonction de stringification des données de la base de données
@@ -49,7 +51,7 @@ services:
       MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
     ports:
       # Port Local: Port contener permet d'ouvrir le port du contener et le diriger vers le port local
-      - 3306:3306
+      - $MYSQL_PORT:$MYSQL_PORT
     # Redémarrage automaitque si erreur
     restart: on-failure
     # Volumes permet de partage des données entre le contener et le système hôte

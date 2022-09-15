@@ -19,7 +19,6 @@ class Server {
     await this.createConnexionMysql(); /** Création du pool MySQL + Test */
     await this.createBDD(); /** Création de la BDD si existe pas */
     await this.createPoolMysql(); /** Création du pool MySQL + Test */
-    /** 🔥🔥🔥🔥 Chargement d'une bdd par défault ??! */
     this.createRoutes(); /** Initialisation de toutes les routes Express */
     this.listenExpress() /** Ecoute du server Express sur son port */
   }

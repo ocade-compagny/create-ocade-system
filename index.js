@@ -79,7 +79,7 @@ class Install {
     MYSQL_PASSWORD=${this.answers.MYSQL_PASSWORD}
     MYSQL_DATABASE=${this.answers.MYSQL_DATABASE}
     MYSQL_HOST_IP="localhost"
-    MYSQL_PORT="3306"
+    MYSQL_PORT=3306
     MYSQL_DEBUG=${this.answers.ENV ? false : true}
     MYSQL_STRINGIFY_OBJECTS="true"
     APP_NAME_SLUG=${this.answers.APP_NAME_SLUG}
