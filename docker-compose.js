@@ -31,9 +31,6 @@ x-common-variables: &common-variables
   # Url du server express
   SERVER_URL: $SERVER_URL
 
-  # Cypto
-  CRYPTO_KEY: $CRYPTO_KEY
-
 
 # Les différents services
 services:
