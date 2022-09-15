@@ -16,7 +16,6 @@ class Install {
   async init () {
     console.log("Bienvenue dans l'installateur Ocade System !\n");
     await this.questions(); /** Pose les questions */
-    this.showStart(); /** Affiche le début de l'installation */
     this.copieTemplate(); /** Copie le template */
     this.createPointEnv(); /** Création du fichier .env */
     this.createDockerCompose(); /** Création du fichier docker-compose.yml */
@@ -65,20 +64,6 @@ class Install {
     });
   }
 
-  /** Affiche le début de l'installation */
-  showStart() {
-    console.log(`
-    ╭───────────────────────────────────────────╮
-    │                                           │
-    │                    O S                    │
-    │                                           │
-    │         INSTALLATION OCADE/SYSTEM         │
-    │             (REACT/NODE/MYSQL)            │
-    │                                           │
-    ╰───────────────────────────────────────────╯
-    `);
-  }
-
   /** Copie le template */
   copieTemplate() {
     execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG )}`);
@@ -102,7 +87,6 @@ class Install {
     REACT_PORT=3000
     REACT_URL="http://localhost:3000"
     `;
-    console.log("ici", this.myPath)
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".env"), env);
   }
 
