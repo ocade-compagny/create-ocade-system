@@ -146,7 +146,7 @@ class Install {
   }
 
   /** Lancement de docker-compose */
-  startDockerCompose() {
+  runDockerCompose() {
     console.log("\n🔥 Lancement de docker-compose");
     execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && docker-compose up -d`, { stdio: "inherit" });
   }
