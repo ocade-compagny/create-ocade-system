@@ -98,7 +98,7 @@ const init = async () => {
 
   /** Copie du dossier template */
   // execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
-  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
+  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "create-ocade-system/template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
 
 
   /** Génération du fichier .env */
