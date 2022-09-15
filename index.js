@@ -164,6 +164,11 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
+
+    console.log(`✅ Url Bdd:    http://localhost:8080`);
+    console.log(`✅ Url Mysql:  http://localhost:${this.answers.MYSQL_PORT}`);
+    console.log(`✅ Url Server: http://localhost:${this.answers.SERVER_PORT}`);
+    console.log(`✅ Url React:  http://localhost:${this.answers.REACT_PORT}`);
   }
 
 }
