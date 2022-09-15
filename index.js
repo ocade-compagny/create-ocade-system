@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import prompts from "prompts";
 import path from "path";
 import {writeFileSync} from "fs";
-import {dockerCompose} from "./install/docker-compose.js";
+import { dockerCompose } from "./docker-compose.js";
 
 
 const ask = async (q) => {
@@ -29,6 +29,43 @@ const ask = async (q) => {
 
 const init = async () => {
   console.log("Bienvenue dans l'installateur Ocade System !\n");
+
+  const packageJSON = {
+    "name": "",
+    "version": "1.0.0",
+    "description": "Server Node js Express",
+    "private": true,
+    "type": "module",
+    "author": "Ocade System",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "dev": "nodemon --delay 1000ms index.js",
+      "serve": "npx kill-port 8000 && nodemon --delay 1000ms index.js",
+    },
+    "keywords": [
+      "ocade-system",
+      "server",
+      "node",
+      "express"
+    ],
+    "author": "Valentin Charrier",
+    "license": "ISC",
+    "postinstall": "node ./post_install.js",
+    "dependencies": {}
+  };
+
+  const packages = [
+    "sass",
+    "express",
+    "nodemon",
+    "dotenv",
+    "mysql",
+    "core",
+    "crypto"
+  ];
+  const devPackages = [
+  ];
 
   const questions = [
     ["APP_NAME", "Nom du projet", "text"],    
@@ -61,13 +98,13 @@ const init = async () => {
 
   /** Copie du dossier template */
   // execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(myPath, packageJSON.name)}`);
-  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "./template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
+  execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../template")} ${path.resolve(myPath, answers.APP_NAME_SLUG )}`);
 
 
   /** Génération du fichier .env */
   const env = `
 APP_NAME=${answers.APP_NAME}
-ENV=${answers.ENV ? "production" : "development"}
+ENV="${answers.ENV ? "production" : "development"}"
 MYSQL_USER=${answers.MYSQL_USER}
 MYSQL_PASSWORD=${answers.MYSQL_PASSWORD}
 MYSQL_DATABASE=${answers.MYSQL_DATABASE}
@@ -87,7 +124,11 @@ writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, ".env"), env);
   /** Génération du fichier docker-compose.yml */
   const dockerComposeYml = dockerCompose(answers);
   writeFileSync(path.resolve(myPath, answers.APP_NAME_SLUG, "docker-compose.yml"), dockerComposeYml);
-  
-  
+
+  /** 
+   * 1. cd dans le dossier créer
+   * 2. docker-compose up -d
+   * 3. Les installation de server doivent être valide !
+   */
 }
 init();
