@@ -21,6 +21,7 @@ class Install {
     this.createDockerCompose(); /** Création du fichier docker-compose.yml */
     this.createServerPackageJson(); /** Création du fichier package.json du serveur */
     this.installServerDependencies(); /** Installation des dépendances du serveur */
+    this.installReactApp(); /** Installation de l'app react */
     this.initDepotGit(); /** Initialisation du dépot git */
     this.runDockerCompose(); /** Lancement de docker-compose */
     this.showFinishInstallation(); /** Affiche la fin de l'installation */
@@ -67,7 +68,7 @@ class Install {
 
   /** Copie le template */
   copieTemplate() {
-    execSync(`cp -r ${path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template")} ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG )}`);
+    execSync(`cp -r ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/template") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }`);
   }
 
   /** Génération du fichier .env */
@@ -131,24 +132,44 @@ class Install {
     │                   O S                     │
     │                                           │
     │          INSTALLATION DEPENDANCES         │
+    │              SERVER EXPRESS               │
+    │                                           │
+    │               OCADE SYSTEM                │
+    │                                           │
+    ╰───────────────────────────────────────────╯
+  
+    `);
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && npm install -g npm@latest && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+  }
+
+  /** Installation de l'app react */
+  installReactApp() {
+    console.log(`
+    ╭───────────────────────────────────────────╮
+    │                                           │
+    │                   O S                     │
+    │                                           │
+    │          INSTALLATION REACT APP           │
+    │            REDUX REDUX-TOOLKIT            │   
+    │                                           │
     │                OCADE SYSTEM               │
     │                                           │
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server")} && npm install -g npm@latest && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application --template redux`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
   initDepotGit() {
     console.log("\n🔥 Initialisation du dépôt git");
-    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && git config --global init.defaultBranch master`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && git config --global init.defaultBranch master`, { stdio: "inherit" });
   }
 
   /** Lancement de docker-compose */
   runDockerCompose() {
     console.log("\n🔥 Lancement de docker-compose\n");
-    execSync(`cd ${path.resolve(this.myPath, this.answers.APP_NAME_SLUG)} && docker-compose up -d --build`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && docker-compose up -d --build`, { stdio: "inherit" });
   }
 
   /** Affiche la fin de l'installation */
