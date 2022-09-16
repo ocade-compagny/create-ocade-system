@@ -81,7 +81,7 @@ class Install {
           ]
         }
       ]);
-      this.answers["TEMPLATE_REACT"] = response;
+      this.answers["TEMPLATE_REACT"] = response.templates;
       resolve();
     });
   }
@@ -176,7 +176,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application ${this.answers["TEMPLATE_REACT"].length ? `--template ${this.answers["TEMPLATE_REACT"]}` : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application ${this.answers["TEMPLATE_REACT"].length ? `--template ${this.answers["TEMPLATE_REACT"][0]}` : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
@@ -205,10 +205,13 @@ class Install {
   
     `);
 
-    console.log(`✅ Url Bdd:    http://localhost:8080`);
-    console.log(`✅ Url Mysql:  http://localhost:${this.answers.MYSQL_PORT}`);
-    console.log(`✅ Url Server: http://localhost:${this.answers.SERVER_PORT}`);
-    console.log(`✅ Url React:  http://localhost:${this.answers.REACT_PORT}`);
+    console.log(`✅ Bdd Url:       http://localhost:8080`);
+    console.log(`⚙ Bdd User:       ${this.answers.MYSQL_USER}`);
+    console.log(`⚙ Bdd Password:   ${this.answers.MYSQL_PASSWORD}`);
+    console.log(`⚙ Bdd Database:   ${this.answers.MYSQL_DATABASE}`);
+    console.log(`✅ Url Mysql:     http://localhost:3306`);
+    console.log(`✅ Url Server:    http://localhost:8000`);
+    console.log(`✅ Url React:     http://localhost:3000`);
   }
 
 }
