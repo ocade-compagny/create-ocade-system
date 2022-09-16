@@ -157,7 +157,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application --template redux`, { stdio: "inherit" });
+    execSync(`npm init react-app application --template redux && mv application ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) }`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
