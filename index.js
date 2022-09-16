@@ -16,6 +16,7 @@ class Install {
   async init () {
     console.log("Bienvenue dans l'installateur Ocade System !\n");
     await this.questions(); /** Pose les questions */
+    await this.questionsTemplate(); /** Pose les questions du template React */
     this.copieTemplate(); /** Copie le template */
     this.createPointEnv(); /** Création du fichier .env */
     this.createDockerCompose(); /** Création du fichier docker-compose.yml */
@@ -62,6 +63,25 @@ class Install {
       /** ASK Questions */
       for (const q of questions) this.answers[q[0]] = await this.ask(q);
       this.answers["APP_NAME_SLUG"] = this.answers["APP_NAME"].toLowerCase().replace(/ /g, "-");
+      resolve();
+    });
+  }
+
+  /** Questions posées et réponse stockées dans this.answers */
+  async questionsTemplate () {
+    return new Promise(async (resolve) => {
+      const response = await prompts([
+        {
+          type: 'multiselect',
+          name: 'templates',
+          message: 'Template React ?',
+          choices: [
+            { title: 'Native', value: '' },
+            { title: 'Redux Toolkit', value: '@ocade-compagny/cra-template-redux-toolkit' },
+          ]
+        }
+      ]);
+      this.answers["TEMPLATE_REACT"] = response;
       resolve();
     });
   }
@@ -150,14 +170,13 @@ class Install {
     │                   O S                     │
     │                                           │
     │          INSTALLATION REACT APP           │
-    │            REDUX REDUX-TOOLKIT            │   
     │                                           │
     │                OCADE SYSTEM               │
     │                                           │
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`npm init react-app application --template redux && mv application ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) }`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application ${this.answers["TEMPLATE_REACT"].length ? `--template ${this.answers["TEMPLATE_REACT"]}` : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
