@@ -77,7 +77,7 @@ class Install {
           message: 'Template React ?',
           choices: [
             { title: 'Native', value: '' },
-            { title: 'Redux Toolkit', value: '@ocade-compagny/cra-template-redux-toolkit' },
+            { title: 'Redux Toolkit', value: '@ocade-compagny/redux-toolkit' },
           ]
         }
       ]);
