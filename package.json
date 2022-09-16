@@ -1,6 +1,6 @@
 {
   "name": "@ocade-compagny/create-ocade-system",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "",
   "type": "module",
   "main": "index.js",
