@@ -81,7 +81,9 @@ class Install {
           ]
         }
       ]);
-      this.answers["TEMPLATE_REACT"] = response.templates;
+      (response.templates === undefined || response.templates.length === 0) 
+        ? this.answers["TEMPLATE"] = "" 
+        : this.answers["TEMPLATE"] = response.templates[0];
       resolve();
     });
   }
@@ -176,7 +178,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npx create-react-app application --template ${this.answers["TEMPLATE_REACT"][0]} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npx create-react-app application ${this.answers["TEMPLATE_REACT"].length ? "--template" + this.answers["TEMPLATE_REACT"][0] : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
