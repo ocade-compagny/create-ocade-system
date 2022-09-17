@@ -179,6 +179,12 @@ class Install {
   
     `);
     execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npx create-react-app application ${this.answers["TEMPLATE_REACT"].length ? "--template" + this.answers["TEMPLATE_REACT"][0] : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+
+    /** On insère les fichiers Dockerfile et .dockerignore */
+    execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/.dockerignore") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
+
+    /** On insère les fichiers Dockerfile et Dockerfile */
+    execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/Dockerfile") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
   }
 
   /** Initialisation du dépôt git */
