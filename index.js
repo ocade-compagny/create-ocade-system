@@ -206,7 +206,7 @@ class Install {
 
   /** Ouvre un shell dans le container React et run build node-sass */
   runBuildNodeSass() {
-    execSync(`docker exec -it ${this.answers.APP_NAME_SLUG}-react sh -c "cd /app/application && npm rebuild node-sass"`, { stdio: "inherit" });
+    execSync(`docker exec -it ${this.answers.APP_NAME_SLUG}-application sh -c "cd /app/application && npm rebuild node-sass"`, { stdio: "inherit" });
   }
 
   /** Affiche la fin de l'installation */
