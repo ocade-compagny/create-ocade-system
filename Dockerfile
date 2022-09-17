@@ -7,6 +7,6 @@ COPY package.json /app/application
 
 COPY . /app/application
 
-RUN npm install
+RUN npm ci
 
 CMD ["npm", "start"]
