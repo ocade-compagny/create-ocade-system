@@ -26,6 +26,7 @@ class Install {
     this.runDockerCompose(); /** Lancement de docker-compose */
     this.runBuildNodeSass(); /** install node-sass avec la bonne version de linux (celle du docker) */
     this.initDepotGit(); /** Initialisation du dépot git */
+    this.createReademe(); /** Création du fichier README.md */
     this.showFinishInstallation(); /** Affiche la fin de l'installation */
   }
 
@@ -214,6 +215,11 @@ class Install {
     execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && git init`, { stdio: "inherit" });
     /** créer un fichier .gitignore et écrire node_modules build */
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".gitignore"), "application/node_modules\napplication/package-lock.json\napplication/build\nserver/node_modules\nserver/package-lock.json");
+  }
+
+  /** Création du fichier README.md */
+  createReadme() {
+    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "README.md"), `# ${this.answers.APP_NAME} by OCADE SYSTEM`);
   }
 
   /** Affiche la fin de l'installation */
