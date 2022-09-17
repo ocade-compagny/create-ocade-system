@@ -212,6 +212,8 @@ class Install {
     /** Suppression du dossier .git dans /app/application */
     execSync(`rm -rf ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "application", ".git") }`, { stdio: "inherit" });
     execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && git init;  git config --global init.defaultBranch master`, { stdio: "inherit" });
+    /** créer un fichier .gitignore et écrire node_modules build */
+    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".gitignore"), "application/node_modules\napplication/package-lock.json\napplication/build\nserver/node_modules\nserver/package-lock.json");
   }
 
   /** Affiche la fin de l'installation */
