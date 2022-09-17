@@ -205,6 +205,19 @@ class Install {
   
     `);
 
+    console.log(`
+    ╭───────────────────────────────────────────╮
+    │                                           │
+    │                   O S                     │
+    │                                           │
+    │       COMMANDE HORS DOCKER-FILE           │
+    │                                           │
+    │       $ cd /server && npm run start       │
+    │                                           │
+    ╰───────────────────────────────────────────╯
+
+    `);
+
     console.log(`✅ Bdd Url:       http://localhost:8080`);
     console.log(`⚙ Bdd User:       ${this.answers.MYSQL_USER}`);
     console.log(`⚙ Bdd Password:   ${this.answers.MYSQL_PASSWORD}`);

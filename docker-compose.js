@@ -96,41 +96,25 @@ services:
     # Permet de démarrer le server express lors du lancement du contener
     command: npm start
 
-  # # Application React
-  # react:
-  #   # Construction de l'image à partir du Dockerfile présent dans le dossier client (copie des dossiers du client react + npm install + npm run start)
-  #   build: ./application
-  #   # Nom du container
-  #   container_name: $APP_NAME_SLUG-application
-  #   # Variables d'environnement importé dans le contener
-  #   environment:
-  #     <<: *common-variables
-  #     NODE_PATH: src
-  #   ports:
-  #     # Redirection du port 3000 du système hôte vers le port 3000 du contener
-  #     - $REACT_PORT:$REACT_PORT
-  #   volumes:
-  #     # On met tout le dossier local (ensemble de tout le projet dans /app)
-  #     - .:/app
-  #   links:
-  #     # Lien entre le contener react et le server (application react va fetcher le server, elle doit pouvoir avoir accès à son url d'exposition)
-  #     - server
-  #   # Permet de démarrer l'application React lors du lancement du contener
-  #   command: npm start
-
-  # # Compilateur scss
-  # sass:
-  #   depends_on:
-  #     - server
-  #   build: 
-  #     context: ./application
-  #     dockerfile: Dockerfile-Sass
-  #   # Nom du container
-  #   container_name: $APP_NAME_SLUG-sass
-  #   restart: unless-stopped
-  #   volumes:
-  #     # On met tout le dossier local (ensemble de tout le projet dans /app)
-  #     - .:/app
-  #   # Permet de démarrer l'application React lors du lancement du contener
-  #   command: npm run build-scss && npm run scss
+  # Application React
+  react:
+    # Construction de l'image à partir du Dockerfile présent dans le dossier client (copie des dossiers du client react + npm install + npm run start)
+    build: ./application
+    # Nom du container
+    container_name: $APP_NAME_SLUG-application
+    # Variables d'environnement importé dans le contener
+    environment:
+      <<: *common-variables
+      NODE_PATH: src
+    ports:
+      # Redirection du port 3000 du système hôte vers le port 3000 du contener
+      - $REACT_PORT:$REACT_PORT
+    volumes:
+      # On met tout le dossier local (ensemble de tout le projet dans /app)
+      - .:/app
+    links:
+      # Lien entre le contener react et le server (application react va fetcher le server, elle doit pouvoir avoir accès à son url d'exposition)
+      - server
+    # Permet de démarrer l'application React lors du lancement du contener
+    command: npm start
 `;
