@@ -191,6 +191,15 @@ class Install {
 
     /** On insère les fichiers Dockerfile et Dockerfile */
     execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/Dockerfile") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
+
+    /** npm init -y à la racine pour install husky */
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init -y && npm i husky --save-dev && ncu -u && npm install`, { stdio: "inherit" });
+
+    /** Réécriture du fichier .husky/pre-commit */
+    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".husky", "pre-commit"), `#!/bin/sh
+    . "$(dirname "$0")/_/husky.sh"
+    cd application && npx lint-staged
+    `);
   }
 
   /** Lancement de docker-compose */
