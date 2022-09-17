@@ -82,8 +82,8 @@ class Install {
         }
       ]);
       (response.templates === undefined || response.templates.length === 0) 
-        ? this.answers["TEMPLATE"] = "" 
-        : this.answers["TEMPLATE"] = response.templates[0];
+        ? this.answers["TEMPLATE_REACT"] = "" 
+        : this.answers["TEMPLATE_REACT"] = response.templates[0];
       resolve();
     });
   }
