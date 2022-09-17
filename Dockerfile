@@ -7,6 +7,6 @@ COPY package.json /app/application
 
 COPY . /app/application
 
-RUN npm ci
+RUN npm ci && npm rebuild node-sass
 
 CMD ["npm", "start"]
