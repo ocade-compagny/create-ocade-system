@@ -176,7 +176,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init react-app application --template ${this.answers["TEMPLATE_REACT"][0]} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npx create-react-app application --template ${this.answers["TEMPLATE_REACT"][0]} && cd application && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Initialisation du dépôt git */
