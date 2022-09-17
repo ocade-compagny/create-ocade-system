@@ -195,7 +195,7 @@ class Install {
   /** Initialisation du dépôt git */
   initDepotGit() {
     console.log("\n🔥 Initialisation du dépôt git");
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && git config --global init.defaultBranch master`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && git init;  git config --global init.defaultBranch master`, { stdio: "inherit" });
   }
 
   /** Lancement de docker-compose */
@@ -229,11 +229,14 @@ class Install {
     console.log(`
     ╭───────────────────────────────────────────╮
     │                                           │
-    │                   O S                     │
+    │                 O S                       │
     │                                           │
-    │       COMMANDE HORS DOCKER-FILE           │
+    │            COMMANDES UTILES               │
     │                                           │
-    │       $ cd /server && npm run start       │
+    │    $ docker-compose up -d                 │
+    │    $ cd /server && npm run start          │
+    │    $ cd /application && npm run start     │
+    │    $ cd /application && npm run build     │
     │                                           │
     ╰───────────────────────────────────────────╯
 
