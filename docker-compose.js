@@ -72,7 +72,7 @@ services:
     # Nom du container
     container_name: $APP_NAME_SLUG-server
     # Redémarrage automaitque si erreur
-    restart: on-failure
+    restart: unless-stopped
     # Connexion vers l'extérieur grâce à la connexion de la machine host (l'ordinateur local)
     # network_mode: "host"
     # Express à besoin de communiquer avec la BDD pour fonctionner, il dépend du service mysql-db
