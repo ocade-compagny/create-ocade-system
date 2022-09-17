@@ -11,6 +11,6 @@ COPY package.json /app/application
 
 COPY . /app/application
 
-RUN npm ci && npm rebuild node-sass
+RUN rm -rf node_modules; npm install && npm rebuild node-sass
 
 CMD ["npm", "start"]FROM node:lts-alpine
