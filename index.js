@@ -201,7 +201,7 @@ class Install {
   /** Lancement de docker-compose */
   runDockerCompose() {
     console.log("\n🔥 Lancement de docker-compose\n");
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && docker-compose up -d --build --progress=plain --no-cache`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && docker-compose up -d --build`, { stdio: "inherit" });
   }
 
   /** Ouvre un shell dans le container React et run build node-sass */
