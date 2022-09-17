@@ -26,7 +26,7 @@ class Install {
     this.runDockerCompose(); /** Lancement de docker-compose */
     this.runBuildNodeSass(); /** install node-sass avec la bonne version de linux (celle du docker) */
     this.initDepotGit(); /** Initialisation du dépot git */
-    this.createReademe(); /** Création du fichier README.md */
+    this.createReadme(); /** Création du fichier README.md */
     this.showFinishInstallation(); /** Affiche la fin de l'installation */
   }
 
