@@ -81,9 +81,13 @@ class Install {
           ]
         }
       ]);
-      (response.templates === undefined || response.templates.length === 0) 
-        ? this.answers["TEMPLATE_REACT"] = "" 
-        : this.answers["TEMPLATE_REACT"] = response.templates[0];
+      if (response.templates.length > 0  && response.templates[0] !== "") {
+        this.answers["TEMPLATE_REACT"] = `npx create-react-app application --template ${response.templates[0]}`;
+        console.log(`✅  "${response.templates[0]}" installation choisie  !`);
+      } else {
+        this.answers["TEMPLATE_REACT"] = "npx create-react-app application";
+        console.log(`✅ Native installation choisie  !`);
+      }
       resolve();
     });
   }
@@ -178,7 +182,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npx create-react-app application ${this.answers["TEMPLATE_REACT"].length ? "--template" + this.answers["TEMPLATE_REACT"][0] : ""} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && ${this.answers["TEMPLATE_REACT"]} && cd application && ncu -u && npm install`, { stdio: "inherit" });
 
     /** On insère les fichiers Dockerfile et .dockerignore */
     execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/.dockerignore") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
