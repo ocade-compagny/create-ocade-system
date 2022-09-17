@@ -25,6 +25,7 @@ class Install {
     this.installReactApp(); /** Installation de l'app react */
     this.initDepotGit(); /** Initialisation du dépot git */
     this.runDockerCompose(); /** Lancement de docker-compose */
+    this.runBuildNodeSass(); /** install node-sass avec la bonne version de linux (celle du docker) */
     this.showFinishInstallation(); /** Affiche la fin de l'installation */
   }
 
@@ -201,6 +202,11 @@ class Install {
   runDockerCompose() {
     console.log("\n🔥 Lancement de docker-compose\n");
     execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && docker-compose up -d --build --progress=plain --no-cache`, { stdio: "inherit" });
+  }
+
+  /** Ouvre un shell dans le container React et run build node-sass */
+  runBuildNodeSass() {
+    execSync(`docker exec -it ${this.answers.APP_NAME_SLUG}-react sh -c "cd /app/application && npm rebuild node-sass"`, { stdio: "inherit" });
   }
 
   /** Affiche la fin de l'installation */

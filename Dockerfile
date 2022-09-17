@@ -11,6 +11,6 @@ COPY package.json /app/application
 
 COPY . /app/application
 
-RUN rm -rf node_modules; rm package-lock.js; npm install && npm rebuild node-sass
+RUN npm install
 
-CMD ["npm", "start"]FROM node:lts-alpine
+CMD ["npm", "start"]
