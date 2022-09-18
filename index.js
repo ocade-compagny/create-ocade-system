@@ -24,6 +24,7 @@ class Install {
     this.installServerDependencies(); /** Installation des dépendances du serveur */
     this.installReactApp(); /** Installation de l'app react */
     this.initDepotGit(); /** Initialisation du dépot git */
+    this.installHusky(); /** Installation de husky */
     this.runDockerCompose(); /** Lancement de docker-compose */
     this.runBuildNodeSass(); /** install node-sass avec la bonne version de linux (celle du docker) */
     this.createReadme(); /** Création du fichier README.md */
@@ -191,15 +192,6 @@ class Install {
 
     /** On insère les fichiers Dockerfile et Dockerfile */
     execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/Dockerfile") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
-
-    /** npm init -y à la racine pour install husky */
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init -y && npx husky-init && npm install husky --save-dev && ncu -u && npm install`, { stdio: "inherit" });
-
-    /** Réécriture du fichier .husky/pre-commit */
-    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".husky", "pre-commit"), `#!/bin/sh
-    . "$(dirname "$0")/_/husky.sh"
-    cd application && npx lint-staged
-    `);
   }
 
   /** Initialisation du dépôt git */
@@ -211,6 +203,18 @@ class Install {
     /** créer un fichier .gitignore et écrire node_modules build */
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".gitignore"), "application/node_modules\napplication/package-lock.json\napplication/build\nserver/node_modules\nserver/package-lock.json");
   }
+
+  /** Installation de Husky (eslint code git commit) */
+  installHusky() {
+    /** npm init -y à la racine pour install husky */
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && npm init -y && npx husky-init && npm install husky --save-dev && ncu -u && npm install`, { stdio: "inherit" });
+
+    /** Réécriture du fichier .husky/pre-commit */
+    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".husky", "pre-commit"), `#!/bin/sh
+    . "$(dirname "$0")/_/husky.sh"
+    cd application && npx lint-staged
+    `);
+  };
 
   /** Lancement de docker-compose */
   runDockerCompose() {
