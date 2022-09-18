@@ -45,16 +45,21 @@ class Server {
   /** Création de la connexion MySQL */
   createConnexionMysql() {
     return new Promise((resolve, reject) => {
-      const connect = mysql2.createConnection({
-        host: process.env.MYSQL_HOST_IP,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        port: process.env.MYSQL_PORT,
-        debug: process.env.MYSQL_DEBUG === "true",
-        stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
-      });
-      connect.connect(err => { err ? console.log("Erreur lors de la connexion BDD", err) : resolve("Connexion réussie !"); });
-      this.connect = connect;
+      try {
+        const connect = mysql2.createConnection({
+          host: process.env.MYSQL_HOST_IP,
+          user: process.env.MYSQL_USER,
+          password: process.env.MYSQL_PASSWORD,
+          port: process.env.MYSQL_PORT,
+          debug: process.env.MYSQL_DEBUG === "true",
+          stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
+        });
+        connect.connect(err => { err ? console.log("Erreur lors de la connexion BDD", err) : resolve("Connexion réussie !"); });
+        this.connect = connect;
+      } catch (error) {
+        console.log("Erreur lors de la connexion BDD", error);
+        process.exit(1);
+      }
     })
   }
 
