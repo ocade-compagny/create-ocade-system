@@ -158,14 +158,7 @@ class Install {
         "eslint-config-prettier": "8.5.0",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "lint-staged": "^13.0.3",
         "prettier": "2.7.1"
-      },
-      "lint-staged": {
-        "**/*.{js,jsx,ts,tsx}": [
-          "npx prettier --write",
-          "npx eslint --fix"
-        ]
       }
     };
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server", "package.json"), JSON.stringify(packageJson, null, 2), { encoding: "utf8", flag: "w" });
@@ -231,8 +224,9 @@ class Install {
     /** Réécriture du fichier .husky/pre-commit */
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, ".husky", "pre-commit"), `#!/bin/sh
     . "$(dirname "$0")/_/husky.sh"
-    cd application && npx lint-staged
-    cd ../server && npx lint-staged
+    # cd application && npx lint-staged
+    cd application && ./node_modules/eslint/bin/eslint.js --fix --ext .js,.jsx,.ts,.tsx,.mjs .
+    cd ../server && ./node_modules/eslint/bin/eslint.js --fix --ext .js,.jsx,.ts,.tsx,.mjs .
     `);
   };
 

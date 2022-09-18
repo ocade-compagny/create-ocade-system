@@ -3,10 +3,7 @@
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "airbnb-base",
-        "plugin:prettier/recommended"
-    ],
+    "extends": "airbnb-base",
     "overrides": [
     ],
     "parserOptions": {
@@ -14,9 +11,15 @@
         "sourceType": "module"
     },
     "rules": {
+        "quotes": ["error", "double"],
         "indent": ["error", 2],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "no-console": "off"
+        "no-console": "off",
+        "no-unused-expressions": "off",
+        "comma-dangle": "off",
+        "prefer-arrow-callback": "off",
+        "func-names": "off",
+        "no-new": "off",
+        "arrow-body-style": "off",
+        "no-prototype-builtins": "off"
     }
 }
