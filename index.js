@@ -4,6 +4,7 @@ import prompts from "prompts";
 import path from "path";
 import {writeFileSync} from "fs";
 import { dockerCompose } from "./docker-compose.js";
+import { README } from "./template/README.js";
 
 /** Class permettant d'installer le system ocade */
 class Install {
@@ -186,7 +187,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && npm install -g npm@latest && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Installation de l'app react */
@@ -251,7 +252,7 @@ class Install {
 
   /** Création du fichier README.md */
   createReadme() {
-    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "README.md"), `# ${this.answers.APP_NAME} by OCADE SYSTEM`);
+    writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "README.md"), README(this.answers));
   }
 
   /** Affiche la fin de l'installation */
