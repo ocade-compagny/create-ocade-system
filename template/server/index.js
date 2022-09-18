@@ -56,7 +56,7 @@ class Server {
         });
         connect.connect(err => { 
           if (err) {
-            console.log("Erreur lors de la connexion BDD", error);
+            console.log("Erreur lors de la connexion BDD", err);
             process.exit(1); /** Permet de relancer le docker container */
           }
           resolve("Connexion réussie !"); 
@@ -71,8 +71,8 @@ class Server {
 
   /** Création de la BDD si existe pas */
   createBDD() {
-    return new Promise((resolve, reject) => {
-      this.connect.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`, [], (err, result) => {
+    return new Promise(resolve => {
+      this.connect.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;`, [], (err) => {
         err ? console.log(err) : resolve();
       });
     });
@@ -80,7 +80,7 @@ class Server {
 
   /** Création du pool MySQL + Test */
   createPoolMysql() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const pool = mysql2.createPool({
         host: process.env.MYSQL_HOST_IP,
         user: process.env.MYSQL_USER,
@@ -90,7 +90,7 @@ class Server {
         debug: process.env.MYSQL_DEBUG === "true",
         stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
       });
-      pool.getConnection(function (err, connection) {
+      pool.getConnection(function (err) {
         return err
           ? console.log("Erreur", err)
           : console.log(`Connexion à la BDD '${process.env.MYSQL_DATABASE}' réussie !`);
