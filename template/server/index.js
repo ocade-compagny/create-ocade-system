@@ -54,7 +54,13 @@ class Server {
           debug: process.env.MYSQL_DEBUG === "true",
           stringifyObjects: process.env.MYSQL_STRINGIFY_OBJECTS === "true"
         });
-        connect.connect(err => { err ? console.log("Erreur lors de la connexion BDD", err) : resolve("Connexion réussie !"); });
+        connect.connect(err => { 
+          if (err) {
+            console.log("Erreur lors de la connexion BDD", error);
+            process.exit(1); /** Permet de relancer le docker container */
+          }
+          resolve("Connexion réussie !"); 
+        });
         this.connect = connect;
       } catch (error) {
         console.log("Erreur lors de la connexion BDD", error);
