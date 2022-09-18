@@ -4,6 +4,10 @@ Cette application à été conçue avec la structure [Ocade System](https://gith
 
 ## Ocade System, c'est quoi ce truc ?
 Architecture dockerisée permettant de créer une application complexe (front + back + bdd + ...).
+[![React](https://img.shields.io/badge/github-blue?style=for-the-badge)](https://github.com/hamzamohdzubair/redant)
+[![Node](https://img.shields.io/badge/book-blueviolet?style=for-the-badge)](https://hamzamohdzubair.github.io/redant/)
+[![Mysql](https://img.shields.io/badge/API-yellow?style=for-the-badge)](https://docs.rs/crate/redant/latest)
+[![Adminer](https://img.shields.io/badge/Crates.io-orange?style=for-the-badge)](https://crates.io/crates/redant)
 
 ## Ocade System, comment l'utiliser ?
 Avant de lancer la commande d'initialisation vous devez vous assurer d'avoir plusieurs librairies d'installées sur votre ordinateur:
