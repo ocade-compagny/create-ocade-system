@@ -137,7 +137,8 @@ class Install {
       "main": "index.js",
       "scripts": {
         "start": "node index.js",
-        "dev": "nodemon index.js"
+        "dev": "nodemon index.js",
+        "eslint": "./node_modules/eslint/bin/eslint.js --fix --ext .js,.jsx,.ts,.tsx,.mjs ."
       },
       "keywords": [
         "Express",
