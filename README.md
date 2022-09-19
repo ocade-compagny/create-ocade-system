@@ -1,12 +1,6 @@
 # Ocade System
 
 ## Installer le System Ocade 
-* Renseigner le fichier `~/.npmrc`
-```
-@ocade-compagny:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=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
-```
-* Installation du Système Ocade:
 ```
 npm init @ocade-compagny/ocade-system@latest
 ```
