@@ -181,7 +181,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && sudo npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Installation de l'app react */
