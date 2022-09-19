@@ -181,7 +181,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && sudo chown -R [owner]:[owner] /usr/local/lib/node_modules && npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
   }
 
   /** Installation de l'app react */
@@ -198,7 +198,7 @@ class Install {
     ╰───────────────────────────────────────────╯
   
     `);
-    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && ${this.answers["TEMPLATE_REACT"]} && cd application && ncu -u && npm install`, { stdio: "inherit" });
+    execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG) } && ${this.answers["TEMPLATE_REACT"]} && sudo chown -R [owner]:[owner] /usr/local/lib/node_modules && cd application && ncu -u && npm install`, { stdio: "inherit" });
 
     /** On insère les fichiers Dockerfile et .dockerignore */
     execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/.dockerignore") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
