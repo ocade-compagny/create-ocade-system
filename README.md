@@ -9,12 +9,6 @@ Architecture suivante:
 * `Banque de composant` (à venir) 
 * `docker-compose.yml` Fichier d'orchestration de tout ce système sous cloche dans des containers afin de ne pas à avoir besoin d'une architecture complexe sur lors de l'installation.
 
-## Installer ocade-system, 
-* Renseigner le fichier `~/.npmrc`
-```
-@ocade-compagny:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=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
-```
 * Installation du Système Ocade:
 ```
 npm init @ocade-compagny/ocade-system@latest
