@@ -1,11 +1,5 @@
 # Ocade System
 
-## Installer le System Ocade 
-```
-npm init @ocade-compagny/ocade-system@latest
-```
-
-
 ## Ocade System, c'est quoi ce truc ?
 Architecture dockerisée permettant de créer une application complexe (front + back + bdd + ...).
 ![Banque de Composants](./readme/composants.png)
@@ -23,6 +17,8 @@ Avant de lancer la commande d'initialisation vous devez vous assurer d'avoir plu
 * [Docker](https://docs.docker.com/engine/install/)
 * Docker doit être démarré (sous linux: `systemctl start docker`)
 * Lancer la commande d'initialisation:
+
+## Installer le System Ocade 
 ```
 npm init @ocade-compagny/ocade-system@latest
 ```
