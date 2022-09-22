@@ -23,6 +23,7 @@ class Install {
     this.createDockerCompose(); /** Création du fichier docker-compose.yml */
     this.createServerPackageJson(); /** Création du fichier package.json du serveur */
     this.installServerDependencies(); /** Installation des dépendances du serveur */
+    this.installPm2(); /** Installation de pm2 */
     this.installReactApp(); /** Installation de l'app react */
     this.initDepotGit(); /** Initialisation du dépot git */
     this.installHusky(); /** Installation de husky */
@@ -83,6 +84,12 @@ class Install {
             { title: 'Native', value: '' },
             { title: 'Redux Toolkit', value: '@ocade-compagny/redux-toolkit' },
           ]
+        },
+        {
+          type: 'boolean',
+          name: 'pm2',
+          message: 'Utiliser pm2 ? (monitoring server)',
+          initial: true
         }
       ]);
       if (response.templates.length > 0  && response.templates[0] !== "") {
@@ -184,6 +191,39 @@ class Install {
     execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && sudo npm i -g npm-check-updates && ncu -u && npm install`, { stdio: "inherit" });
   }
 
+  /** Install PM2 ? */
+  installPm2() {
+    if (this.answers.pm2) {
+      console.log(`
+      ╭───────────────────────────────────────────╮
+      │                                           │
+      │                   O S                     │
+      │                                           │
+      │          INSTALLATION DEPENDANCES         │
+      │                 PM2                       │
+      │                                           │
+      │               OCADE SYSTEM                │
+      │                                           │
+      ╰───────────────────────────────────────────╯
+
+      `);
+      /** Install pm2 */
+      execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server") } && sudo npm i -g pm2`, { stdio: "inherit" });
+      /** Ajouter la commande pm2 à notre serveur */
+      packageJson.scripts["pm2-start"] = "pm2 start index.js";
+      packageJson.scripts["pm2-list"] = "pm2 list";
+      packageJson.scripts["pm2-stop"] = "pm2 stop";
+      packageJson.scripts["pm2-restart"] = "pm2 restart";
+      packageJson.scripts["pm2-delete"] = "pm2 delete";
+      packageJson.scripts["pm2-monit"] = "pm2 monit";
+      packageJson.scripts["pm2-jlist"] = "pm2 jlist";
+      packageJson.scripts["pm2-logs"] = "pm2 logs";
+      packageJson.scripts["pm2-startup"] = "pm2 startup";
+      packageJson.scripts["pm2-save"] = "pm2 save";
+      packageJson.scripts["pm2-unstartup"] = "pm2 unstartup";
+    }
+  }
+
   /** Installation de l'app react */
   installReactApp() {
     console.log(`
@@ -265,18 +305,20 @@ class Install {
     `);
 
     console.log(`
-    ╭───────────────────────────────────────────╮
-    │                                           │
-    │                 O S                       │
-    │                                           │
-    │            COMMANDES UTILES               │
-    │                                           │
-    │    $ docker-compose up -d                 │
-    │    $ cd /server && npm run start          │
-    │    $ cd /application && npm run start     │
-    │    $ cd /application && npm run build     │
-    │                                           │
-    ╰───────────────────────────────────────────╯
+    ╭─────────────────────────────────────────────────────────────────────╮
+    │                                                                     │
+    │                             O S                                     │
+    │                                                                     │
+    │                      COMMANDES UTILES                               │
+    │                                                                     │
+    │    $ docker-compose up -d  (Démarrer docker)                        │
+    │    $ cd /server && npm run start  (Démarrer server Express)         │
+    │    $ cd /server && npm run pm2-start  (Lancer minotor Pm2)          │
+    │    [Documentation](https://www.npmjs.com/package/pm2)               │
+    │    $ cd /application && npm run start  (Lancer React)               │
+    │    $ cd /application && npm run build  (Build React)                │
+    │                                                                     │
+    ╰─────────────────────────────────────────────────────────────────────╯
 
     `);
 
