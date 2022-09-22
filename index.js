@@ -86,11 +86,18 @@ class Install {
         },
         {
           type: 'toggle',
+          name: 'ocade-components',
+          message: 'Installer la librairie Ocade Components ? (Composants React)',
+          initial: true
+        },
+        {
+          type: 'toggle',
           name: 'pm2',
           message: 'Utiliser pm2 ? (monitoring server)',
           initial: true
         }
       ]);
+      this.answers["ocade-components"] = response["ocade-components"];
       this.answers["PM2"] = response.pm2;
       if (response.templates.length > 0  && response.templates[0] !== "") {
         this.answers["TEMPLATE_REACT"] = `npx create-react-app application --template ${response.templates[0]}`;
@@ -169,6 +176,7 @@ class Install {
         "prettier": "2.7.1"
       }
     };
+    if (this.answers["ocade-components"]) packageJson.dependencies["@ocade-compagny/ocade-components"] = "^1.0.0";
     if (this.answers.PM2) {
       /** Ajouter la commande pm2 à notre serveur */
       packageJson.dependencies.pm2 = "^5.1.2";
