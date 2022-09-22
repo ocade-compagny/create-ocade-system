@@ -91,6 +91,7 @@ class Install {
           initial: true
         }
       ]);
+      this.answers["PM2"] = response.pm2;
       if (response.templates.length > 0  && response.templates[0] !== "") {
         this.answers["TEMPLATE_REACT"] = `npx create-react-app application --template ${response.templates[0]}`;
         console.log(`✅  "${response.templates[0]}" installation choisie  !`);
@@ -98,7 +99,6 @@ class Install {
         this.answers["TEMPLATE_REACT"] = "npx create-react-app application";
         console.log(`✅ Native installation choisie  !`);
       }
-      console.log("responses !!!", this.answers)
       resolve();
     });
   }
@@ -169,9 +169,9 @@ class Install {
         "prettier": "2.7.1"
       }
     };
-
     if (this.answers.pm2) {
       /** Ajouter la commande pm2 à notre serveur */
+      packageJson.dependencies.pm2 = "^5.1.2";
       packageJson.scripts["pm2-start"] = "pm2 start index.js";
       packageJson.scripts["pm2-list"] = "pm2 list";
       packageJson.scripts["pm2-stop"] = "pm2 stop";
