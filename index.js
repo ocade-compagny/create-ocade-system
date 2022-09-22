@@ -174,15 +174,15 @@ class Install {
       packageJson.dependencies.pm2 = "^5.1.2";
       packageJson.scripts["pm2-start"] = "pm2 start index.js";
       packageJson.scripts["pm2-list"] = "pm2 list";
-      packageJson.scripts["pm2-stop"] = "pm2 stop";
-      packageJson.scripts["pm2-restart"] = "pm2 restart";
-      packageJson.scripts["pm2-delete"] = "pm2 delete";
+      packageJson.scripts["pm2-stop"] = "pm2 stop index.js";
+      packageJson.scripts["pm2-restart"] = "pm2 restart index.js";
+      packageJson.scripts["pm2-delete"] = "pm2 delete index.js";
       packageJson.scripts["pm2-monit"] = "pm2 monit";
       packageJson.scripts["pm2-jlist"] = "pm2 jlist";
       packageJson.scripts["pm2-logs"] = "pm2 logs";
-      packageJson.scripts["pm2-startup"] = "pm2 startup";
+      packageJson.scripts["pm2-startup"] = "pm2 startup index.js";
       packageJson.scripts["pm2-save"] = "pm2 save";
-      packageJson.scripts["pm2-unstartup"] = "pm2 unstartup";
+      packageJson.scripts["pm2-unstartup"] = "pm2 unstartup index.js";
     }
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server", "package.json"), JSON.stringify(packageJson, null, 2), { encoding: "utf8", flag: "w" });
   }
