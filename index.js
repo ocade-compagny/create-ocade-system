@@ -86,7 +86,7 @@ class Install {
           ]
         },
         {
-          type: 'boolean',
+          type: 'toggle',
           name: 'pm2',
           message: 'Utiliser pm2 ? (monitoring server)',
           initial: true
