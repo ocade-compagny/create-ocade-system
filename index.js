@@ -169,7 +169,7 @@ class Install {
         "prettier": "2.7.1"
       }
     };
-    if (this.answers.pm2) {
+    if (this.answers.PM2) {
       /** Ajouter la commande pm2 à notre serveur */
       packageJson.dependencies.pm2 = "^5.1.2";
       packageJson.scripts["pm2-start"] = "pm2 start index.js";
@@ -184,7 +184,6 @@ class Install {
       packageJson.scripts["pm2-save"] = "pm2 save";
       packageJson.scripts["pm2-unstartup"] = "pm2 unstartup";
     }
-
     writeFileSync(path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "server", "package.json"), JSON.stringify(packageJson, null, 2), { encoding: "utf8", flag: "w" });
   }
 
