@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./readme/create-ocade-system.png" />
+</p>
+
 # Ocade System
 
 ## Ocade System, c'est quoi ce truc ?
