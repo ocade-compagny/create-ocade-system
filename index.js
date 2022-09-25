@@ -25,7 +25,7 @@ class Install {
     this.installServerDependencies(); /** Installation des dépendances du serveur */
     this.installReactApp(); /** Installation de l'app react */
     this.initDepotGit(); /** Initialisation du dépot git */
-    this.installHusky(); /** Installation de husky */
+    // this.installHusky(); /** Installation de husky */
     this.runDockerCompose(); /** Lancement de docker-compose */
     this.runBuildNodeSass(); /** install node-sass avec la bonne version de linux (celle du docker) */
     this.createReadme(); /** Création du fichier README.md */
@@ -86,18 +86,11 @@ class Install {
         },
         {
           type: 'toggle',
-          name: 'ocade-composants',
-          message: 'Installer la librairie Ocade Composants ? (Composants React)',
-          initial: true
-        },
-        {
-          type: 'toggle',
           name: 'pm2',
           message: 'Utiliser pm2 ? (monitoring server)',
           initial: true
         }
       ]);
-      this.answers["ocade-composants"] = response["ocade-composants"];
       this.answers["PM2"] = response.pm2;
       if (response.templates.length > 0  && response.templates[0] !== "") {
         this.answers["TEMPLATE_REACT"] = `npx create-react-app application --template ${response.templates[0]}`;
@@ -176,7 +169,6 @@ class Install {
         "prettier": "2.7.1"
       }
     };
-    if (this.answers["ocade-composants"]) packageJson.dependencies["@ocade-compagny/ocade-composants"] = "^1.0.0";
     if (this.answers.PM2) {
       /** Ajouter la commande pm2 à notre serveur */
       packageJson.dependencies.pm2 = "^5.1.2";
@@ -235,6 +227,11 @@ class Install {
 
     /** On insère les fichiers Dockerfile et Dockerfile */
     execSync(`cp ${ path.resolve(path.dirname(process.argv[1]), "../@ocade-compagny/create-ocade-system/Dockerfile") } ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG ) }/application`);
+
+    /** npm install @ocade-compagny/ocade-composants si answers est true */
+    if (this.answers["ocade-composants"]) {
+      execSync(`cd ${ path.resolve(this.myPath, this.answers.APP_NAME_SLUG, "application") } && npm install @ocade-compagny/ocade-composants`, { stdio: "inherit" });
+    }
   }
 
   /** Initialisation du dépôt git */
