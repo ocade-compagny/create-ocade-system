@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./readme/create-ocade-system.png" />
+  <img src="./readme/create-ocade-system-1.png" />
 </p>
 
 # Ocade System
